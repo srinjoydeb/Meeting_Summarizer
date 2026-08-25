@@ -1,0 +1,482 @@
+<!DOCTYPE html>
+<html lang="en">
+
+<head>
+
+    <meta charset="UTF-8">
+
+    <meta
+        name="viewport"
+        content="width=device-width, initial-scale=1.0"
+    >
+
+    <title>Meeting Summarizer</title>
+
+    <link
+        rel="stylesheet"
+        href="css/style.css"
+    >
+
+</head>
+
+
+<body>
+
+    <!-- ================= HEADER ================= -->
+
+    <header class="navbar">
+
+        <div class="logo">
+            <span class="logo-icon">🎙</span>
+            <span>Meeting Summarizer</span>
+        </div>
+
+        <div class="nav-status">
+
+            <span class="status-dot"></span>
+
+            AI Ready
+
+        </div>
+
+    </header>
+
+
+    <!-- ================= MAIN ================= -->
+
+    <main class="container">
+
+
+        <!-- ================= HERO ================= -->
+
+        <section class="hero">
+
+            <div class="hero-badge">
+                AI POWERED
+            </div>
+
+            <h1>
+                Turn meetings into
+                <span>actionable insights.</span>
+            </h1>
+
+            <p>
+                Upload your meeting recording and let AI
+                generate a structured Minutes of Meeting
+                with discussions, decisions and action items.
+            </p>
+
+        </section>
+
+
+        <!-- ================= UPLOAD ================= -->
+
+        <section class="upload-section">
+
+            <div class="upload-card">
+
+                <div class="upload-header">
+
+                    <h2>Upload Meeting</h2>
+
+                    <p>
+                        Supported formats: MP3, WAV, M4A, FLAC
+                    </p>
+
+                </div>
+
+
+                <div
+                    class="drop-zone"
+                    id="dropZone"
+                >
+
+                    <input
+                        type="file"
+                        id="audioFile"
+                        accept=".mp3,.wav,.m4a,.flac"
+                        hidden
+                    >
+
+
+                    <div class="upload-icon">
+                        ↑
+                    </div>
+
+
+                    <h3>
+                        Drop your meeting recording here
+                    </h3>
+
+
+                    <p>
+                        or
+                        <span id="browseText">
+                            browse files
+                        </span>
+                    </p>
+
+
+                    <div
+                        class="selected-file"
+                        id="selectedFile"
+                    ></div>
+
+                </div>
+
+
+                <button
+                    class="generate-btn"
+                    id="generateButton"
+                    disabled
+                >
+
+                    <span>Generate MoM</span>
+
+                    <span class="arrow">
+                        →
+                    </span>
+
+                </button>
+
+            </div>
+
+        </section>
+
+
+        <!-- ================= PROCESSING ================= -->
+
+        <section
+            class="processing-section hidden"
+            id="processingSection"
+        >
+
+            <div class="processing-card">
+
+                <div class="loader"></div>
+
+                <h2>
+                    Processing your meeting
+                </h2>
+
+                <p id="processingText">
+                    Analyzing meeting...
+                </p>
+
+
+                <div class="processing-steps">
+
+                    <div
+                        class="process-step active"
+                        id="stepTranscription"
+                    >
+
+                        <span>✓</span>
+
+                        Transcription
+
+                    </div>
+
+
+                    <div
+                        class="process-step"
+                        id="stepDiarization"
+                    >
+
+                        <span>○</span>
+
+                        Speaker Diarization
+
+                    </div>
+
+
+                    <div
+                        class="process-step"
+                        id="stepAnalysis"
+                    >
+
+                        <span>○</span>
+
+                        AI Analysis
+
+                    </div>
+
+
+                    <div
+                        class="process-step"
+                        id="stepGeneration"
+                    >
+
+                        <span>○</span>
+
+                        MoM Generation
+
+                    </div>
+
+                </div>
+
+            </div>
+
+        </section>
+
+
+        <!-- ================= RESULTS ================= -->
+
+        <section
+            class="result-section hidden"
+            id="resultSection"
+        >
+
+
+            <!-- Meeting heading -->
+
+            <div class="result-header">
+
+                <div>
+
+                    <div class="result-label">
+                        MEETING SUMMARY
+                    </div>
+
+                    <h1 id="meetingTitle">
+                        Meeting Title
+                    </h1>
+
+                    <div class="meeting-meta">
+
+                        <span id="meetingDate">
+                            📅 Today
+                        </span>
+
+                        <span>•</span>
+
+                        <span id="meetingDuration">
+                            ⏱ Meeting
+                        </span>
+
+                    </div>
+
+                </div>
+
+
+                <button
+                    class="new-meeting-btn"
+                    id="newMeetingButton"
+                >
+
+                    + New Meeting
+
+                </button>
+
+            </div>
+
+
+            <!-- Summary -->
+
+            <div class="summary-card">
+
+                <div class="card-heading">
+
+                    <div class="heading-icon summary-icon">
+                        ✦
+                    </div>
+
+                    <div>
+
+                        <h2>Executive Summary</h2>
+
+                        <p>
+                            AI-generated overview
+                        </p>
+
+                    </div>
+
+                </div>
+
+
+                <p
+                    class="summary-text"
+                    id="summary"
+                ></p>
+
+            </div>
+
+
+            <!-- Two column layout -->
+
+            <div class="content-grid">
+
+
+                <!-- Discussion -->
+
+                <div class="content-card">
+
+                    <div class="card-heading">
+
+                        <div class="heading-icon">
+                            💬
+                        </div>
+
+                        <div>
+
+                            <h2>
+                                Key Discussion Points
+                            </h2>
+
+                            <p>
+                                Main topics covered
+                            </p>
+
+                        </div>
+
+                    </div>
+
+
+                    <div id="discussionPoints"></div>
+
+                </div>
+
+
+                <!-- Decisions -->
+
+                <div class="content-card">
+
+                    <div class="card-heading">
+
+                        <div class="heading-icon">
+                            ✓
+                        </div>
+
+                        <div>
+
+                            <h2>
+                                Decisions
+                            </h2>
+
+                            <p>
+                                Decisions made during meeting
+                            </p>
+
+                        </div>
+
+                    </div>
+
+
+                    <div id="decisions"></div>
+
+                </div>
+
+
+            </div>
+
+
+            <!-- Action Items -->
+
+            <div class="content-card action-card">
+
+                <div class="card-heading">
+
+                    <div class="heading-icon">
+                        📌
+                    </div>
+
+                    <div>
+
+                        <h2>
+                            Action Items
+                        </h2>
+
+                        <p>
+                            Tasks that need to be completed
+                        </p>
+
+                    </div>
+
+                </div>
+
+
+                <div class="action-table-wrapper">
+
+                    <table>
+
+                        <thead>
+
+                            <tr>
+
+                                <th>
+                                    TASK
+                                </th>
+
+                                <th>
+                                    OWNER
+                                </th>
+
+                                <th>
+                                    DEADLINE
+                                </th>
+
+                            </tr>
+
+                        </thead>
+
+
+                        <tbody id="actionItems">
+
+                        </tbody>
+
+                    </table>
+
+                </div>
+
+            </div>
+
+
+            <!-- Open Questions -->
+
+            <div class="content-card">
+
+                <div class="card-heading">
+
+                    <div class="heading-icon">
+                        ?
+                    </div>
+
+                    <div>
+
+                        <h2>
+                            Open Questions
+                        </h2>
+
+                        <p>
+                            Items requiring further discussion
+                        </p>
+
+                    </div>
+
+                </div>
+
+
+                <div id="openQuestions"></div>
+
+            </div>
+
+
+        </section>
+
+    </main>
+
+
+    <footer>
+
+        <p>
+            Meeting Summarizer • AI-powered meeting intelligence
+        </p>
+
+    </footer>
+
+
+    <script src="js/app.js"></script>
+
+</body>
+
+</html>
